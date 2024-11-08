@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="de" translate="no">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EL POLLO LOCO</title>
+    <link rel="icon" type="image/x-icon" href="./img/10_web_icon/I-1.png" />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div id="rotateContainer" class="flexContainer">
+      <h1>
+        Please rotate your device to get into landscape mode for better gaming
+        experience.
+      </h1>
+    </div>
+    <div id="mainContainer" class="mainContainer flexContainerCol">
+      <h1 id="title">EL POLLO LOCO</h1>
+      <div id="startMenuSettingsContainer" class="">
+        <div id="startMenuBtnsContainer" class="flexContainer">
+          <button id="playBtn" class="startMenuBtns">PLAY</button>
+          <button id="storyBtn" class="startMenuBtns">STORY</button>
+          <button id="impBtn" class="startMenuBtns">DSVGO</button>
+          <img
+            id="audioImg"
+            class="menuIcons audioOn"
+            src="./img/11_icons/audioOn.svg"
+            alt="audio icon"
+          />
+          <img
+            id="gamepadImg"
+            class="menuIcons"
+            src="./img/11_icons/gamepad.svg"
+            alt="gamepad icon"
+          />
+          <img
+            id="screenImg"
+            class="menuIcons fullscreen"
+            src="./img/11_icons/fullscreen.svg"
+            alt="screen icon"
+          />
+        </div>
+        <div id="returnHome" class="flexContainer">
+          <button id="returnHomeBtn">Back to Home Menu</button>
+        </div>
+        <div id="story" class="flexContainerCol">
+          <div id="closeIconContainerStory" class="flexContainerEnd">
+            <img
+              id="closeIconStory"
+              src="./img/11_icons/close.svg"
+              alt="close icon"
+            />
+          </div>
+          <div id="storyContent" class="flexContainerCol">
+            <h1>The Legend of Pepe</h1>
+            <div id="storyPars">
+              <p>
+                In the heart of a quaint Mexican village, lives Pepe, a humble
+                yet courageous villager known for his quick reflexes and
+                unshakable bravery. One fateful day, the peaceful life of the
+                village is thrown into chaos when a swarm of unruly wild
+                chickens descends upon the town, causing havoc wherever they go.
+                <br />
+              </p>
+              <br />
+              <p>
+                With a heart full of determination, Pepe steps forward to
+                confront the feathery menace. Armed with his sharp wits and
+                agile movements, he takes on the challenge to protect his home
+                and restore harmony to the village. Through his daring actions,
+                Pepe becomes a local legend, facing the feathered threat with
+                unmatched courage to ensure the safety of his beloved community.
+              </p>
+              <br />
+              <p>
+                As the villagers cheer him on, Pepe fights not just to defend
+                his village, but to remind everyone that true heroism can rise
+                from the most unexpected of places.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div id="instructions" class="flexContainerCol">
+          <div id="closeIconContainerGame" class="flexContainerEnd">
+            <img
+              id="closeIconGame"
+              src="./img/11_icons/close.svg"
+              alt="close icon"
+            />
+          </div>
+          <div id="instructionsContainer" class="flexContainerCol">
+            <div class="instructionsPars flexContainer">
+              <p class="flexContainer">Move Right:</p>
+              <p class="flexContainer">→</p>
+            </div>
+            <div class="instructionsPars flexContainer">
+              <p class="flexContainer">Move Left:</p>
+              <p class="flexContainer">←</p>
+            </div>
+            <div class="instructionsPars flexContainer">
+              <p class="flexContainer">Jump:</p>
+              <p class="flexContainer">↑</p>
+            </div>
+            <div class="instructionsPars flexContainer">
+              <p class="flexContainer">Throw Bottle:</p>
+              <p class="flexContainer">↓</p>
+            </div>
+          </div>
+        </div>
+        <canvas width="720" height="480" id="mainCanvas"> </canvas>
+
+        <div id="controlBtnsContainer" class="flexContainer">
+          <div id="arrowControlBtnsContainer" class="flexContainerCol">
+            <div id="upArrowBtnContainer">
+              <img
+                id="upArrowImg"
+                class="controlBtns"
+                src="./img/11_icons/upArrow.svg"
+                alt="up arrow icon"
+              />
+            </div>
+            <div id="leftRightArrowBtnsContainer" class="flexContainer">
+              <img
+                id="leftArrowImg"
+                class="controlBtns"
+                src="./img/11_icons/leftArrow.svg"
+                alt="left arrow icon"
+              />
+              <img
+                id="rightArrowImg"
+                class="controlBtns"
+                src="./img/11_icons/rightArrow.svg"
+                alt="right arrow icon"
+              />
+            </div>
+          </div>
+          <div id="bottleControlContainer" class="flexContainer">
+            <img
+              id="bottleImg"
+              class="controlBtns"
+              src="./img/11_icons/bottle.svg"
+              alt="bottle icon"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="impressumContainer" class="flexContainer">
+      <div id="impressumContent">
+        <div id="closeIconContainerImpressum" class="flexContainerEnd">
+          <img
+            id="closeIconImpressum"
+            src="./img/11_icons/close.svg"
+            alt="close icon"
+          />
+        </div>
+        <h2>Impressum</h2>
+        <br />
+        <p>Angaben gemäß § 5 TMG</p>
+        <br />
+        <p>
+          Fabion Latifi<br />
+          E-Mail: fabioltf@gmail.com <br />
+        </p>
+        <br />
+        <p><strong>Vertreten durch: </strong><br /></p>
+        <p>
+          Developer Akademie GmbH <br />
+          Tassiloplatz 25 <br />
+          81541 München<br />
+        </p>
+        <p>
+          <br />
+          <strong>Haftungsausschluss: </strong><br /><br /><strong
+            >Haftung für Links</strong
+          ><br /><br />
+          Unser Angebot enthält Links zu externen Webseiten Dritter, auf deren
+          Inhalte wir keinen Einfluss haben. Deshalb können wir für diese
+          fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der
+          verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der
+          Seiten verantwortlich. Die verlinkten Seiten wurden zum Zeitpunkt der
+          Verlinkung auf mögliche Rechtsverstöße überprüft. Rechtswidrige
+          Inhalte waren zum Zeitpunkt der Verlinkung nicht erkennbar. Eine
+          permanente inhaltliche Kontrolle der verlinkten Seiten ist jedoch ohne
+          konkrete Anhaltspunkte einer Rechtsverletzung nicht zumutbar. Bei
+          Bekanntwerden von Rechtsverletzungen werden wir derartige Links
+          umgehend entfernen.<br /><br /><strong>Urheberrecht</strong
+          ><br /><br />
+          Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen
+          Seiten unterliegen dem deutschen Urheberrecht. Die Vervielfältigung,
+          Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der
+          Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung des
+          jeweiligen Autors bzw. Erstellers. Downloads und Kopien dieser Seite
+          sind nur für den privaten, nicht kommerziellen Gebrauch gestattet.
+          Soweit die Inhalte auf dieser Seite nicht vom Betreiber erstellt
+          wurden, werden die Urheberrechte Dritter beachtet. Insbesondere werden
+          Inhalte Dritter als solche gekennzeichnet. Sollten Sie trotzdem auf
+          eine Urheberrechtsverletzung aufmerksam werden, bitten wir um einen
+          entsprechenden Hinweis. Bei Bekanntwerden von Rechtsverletzungen
+          werden wir derartige Inhalte umgehend entfernen.
+        </p>
+      </div>
+    </div>
+    <script src="./classes/drawableObject.class.js"></script>
+    <script src="./classes/sprite.class.js"></script>
+    <script src="./classes/character.class.js"></script>
+    <script src="./classes/chicken.class.js"></script>
+    <script src="./classes/chick.class.js"></script>
+    <script src="./classes/clouds.class.js"></script>
+    <script src="./classes/statusBar.class.js"></script>
+    <script src="./classes/bottlesBar.class.js"></script>
+    <script src="./classes/bottles.class.js"></script>
+    <script src="./classes/coinsBar.class.js"></script>
+    <script src="./classes/coins.class.js"></script>
+    <script src="./classes/world.class.js"></script>
+    <script src="./classes/backgrounds.class.js"></script>
+    <script src="./classes/keyboard.class.js"></script>
+    <script src="./classes/level.class.js"></script>
+    <script src="./classes/throwableObject.class.js"></script>
+    <script src="./classes/endboss.class.js"></script>
+    <script src="./classes/endbossStatusBar.class.js"></script>
+    <script src="./levels/level1.js"></script>
+    <script src="./js/game.js"></script>
+  </body>
+</html>

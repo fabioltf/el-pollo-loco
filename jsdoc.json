@@ -1,0 +1,12 @@
+{
+  "source": {
+    "include": ["./classes", "./js", "./levels"],
+    "includePattern": ".+\\.js(doc|x)?$",
+    "excludePattern": "(node_modules|\\..+)"
+  },
+  "opts": {
+    "destination": "./docs",
+    "recurse": true
+  },
+  "plugins": ["plugins/markdown"]
+}

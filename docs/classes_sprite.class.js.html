@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: classes/sprite.class.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: classes/sprite.class.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Represents a sprite object that can move, jump, and interact with the environment.
+ * Extends the DrawableObject class to include additional functionality related to movement and collision.
+ */
+class Sprite extends DrawableObject {
+  speed = 0.15;
+  otherDirection = false;
+  speedY = 0;
+  acceleration = 2.5;
+  life = 100;
+  lastCollision = 0;
+
+  /**
+   * Applies gravity to the sprite, adjusting its vertical position based on speed.
+   * Sets an interval to update the position and check for landing.
+   */
+  applyGravity() {
+    setInterval(() => {
+      if (this.isAboveGround() || this.speedY > 0) {
+        this.axisY -= this.speedY;
+        this.speedY -= this.acceleration;
+      }
+
+      // Check if character has landed
+      if (!this.isAboveGround() &amp;&amp; this.axisY >= 186) {
+        this.axisY = 186; // Reset to default axisY
+        this.speedY = 0; // Reset vertical speed
+      }
+    }, 1000 / 25);
+  }
+
+  /**
+   * Checks if the sprite is above ground.
+   * @returns {boolean} True if the sprite is above ground, false otherwise.
+   */
+  isAboveGround() {
+    if (this instanceof ThrowableObject) {
+      return true;
+    } else {
+      return this.axisY &lt; 186;
+    }
+  }
+
+  /**
+   * Animates the movement of the sprite by updating the current image.
+   * @param {string[]} images - An array of image paths for animation.
+   */
+  moveAnimation(images) {
+    let i = this.currentImg % images.length;
+    let path = images[i];
+    this.img = this.imgsArray[path];
+    this.currentImg++;
+  }
+
+  /**
+   * Moves the sprite to the left.
+   */
+  animateLeft() {
+    this.axisX -= this.speed;
+  }
+
+  /**
+   * Moves the sprite to the right.
+   */
+  moveRight() {
+    this.axisX += this.speed;
+    this.otherDirection = false;
+  }
+
+  /**
+   * Moves the sprite to the left and sets the direction to left.
+   */
+  moveLeft() {
+    this.axisX -= this.speed;
+    this.otherDirection = true;
+  }
+
+  /**
+   * Makes the sprite jump by setting its vertical speed.
+   */
+  jump() {
+    this.speedY = 24;
+  }
+
+  /**
+   * Checks for a collision with another sprite object.
+   * @param {Sprite} spriteObject - The sprite object to check for collision with.
+   * @returns {boolean} True if a collision is detected, false otherwise.
+   */
+  isColliding(spriteObject) {
+    return (
+      this.axisX + this.width - 20 > spriteObject.axisX &amp;&amp;
+      this.axisY + this.height > spriteObject.axisY &amp;&amp;
+      this.axisX &lt; spriteObject.axisX + 20 &amp;&amp;
+      this.axisY &lt; spriteObject.axisY + spriteObject.height
+    );
+  }
+
+  /**
+   * Checks for a collision with an end boss.
+   * @param {Sprite} spriteObject - The sprite object representing the end boss.
+   * @returns {boolean} True if a collision with the end boss is detected, false otherwise.
+   */
+  isCollidingEndboss(spriteObject) {
+    return (
+      this.axisX + this.width - 60 > spriteObject.axisX &amp;&amp;
+      this.axisY + this.height > spriteObject.axisY &amp;&amp;
+      this.axisX &lt; spriteObject.axisX &amp;&amp;
+      this.axisY &lt; spriteObject.axisY + spriteObject.height
+    );
+  }
+
+  /**
+   * Reduces the sprite's life by 1 upon collision.
+   * If life drops below 0, it is set to 0.
+   * Records the time of the last collision.
+   */
+  collide() {
+    this.life -= 1;
+    if (this.life &lt; 0) {
+      this.life = 0;
+    } else {
+      this.lastCollision = new Date().getTime();
+    }
+  }
+
+  /**
+   * Checks if the sprite is dead (life is 0).
+   * @returns {boolean} True if the sprite is dead, false otherwise.
+   */
+  isDead() {
+    return this.life === 0;
+  }
+
+  /**
+   * Checks if the sprite is currently hurt based on the time since the last collision.
+   * @returns {boolean} True if the sprite is hurt, false otherwise.
+   */
+  isHurt() {
+    let timePassed = new Date().getTime() - this.lastCollision;
+    timePassed = timePassed / 1000;
+    return timePassed &lt; 0.2;
+  }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Backgrounds.html">Backgrounds</a></li><li><a href="Bottles.html">Bottles</a></li><li><a href="BottlesBar.html">BottlesBar</a></li><li><a href="Character.html">Character</a></li><li><a href="Chick.html">Chick</a></li><li><a href="Chicken.html">Chicken</a></li><li><a href="Clouds.html">Clouds</a></li><li><a href="Coins.html">Coins</a></li><li><a href="CoinsBar.html">CoinsBar</a></li><li><a href="DrawableObject.html">DrawableObject</a></li><li><a href="Endboss.html">Endboss</a></li><li><a href="EndbossStatusBar.html">EndbossStatusBar</a></li><li><a href="Keyboard.html">Keyboard</a></li><li><a href="Level.html">Level</a></li><li><a href="Sprite.html">Sprite</a></li><li><a href="StatusBar.html">StatusBar</a></li><li><a href="ThrowableObject.html">ThrowableObject</a></li><li><a href="World.html">World</a></li></ul><h3>Global</h3><ul><li><a href="global.html#adjustCanvasSize">adjustCanvasSize</a></li><li><a href="global.html#animateCharacter">animateCharacter</a></li><li><a href="global.html#btnsPressEvents">btnsPressEvents</a></li><li><a href="global.html#displayGameOver">displayGameOver</a></li><li><a href="global.html#exitFullscreen">exitFullscreen</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#initLevel">initLevel</a></li><li><a href="global.html#muteAllSounds">muteAllSounds</a></li><li><a href="global.html#newGame">newGame</a></li><li><a href="global.html#onFullscreenChange">onFullscreenChange</a></li><li><a href="global.html#pushInterval">pushInterval</a></li><li><a href="global.html#requestAnimationFrameId">requestAnimationFrameId</a></li><li><a href="global.html#requestFullscreen">requestFullscreen</a></li><li><a href="global.html#resetCanvasSize">resetCanvasSize</a></li><li><a href="global.html#setCanvasSize">setCanvasSize</a></li><li><a href="global.html#startGameMenu">startGameMenu</a></li><li><a href="global.html#stopAllIntervals">stopAllIntervals</a></li><li><a href="global.html#toggleFullScreen">toggleFullScreen</a></li><li><a href="global.html#toggleRotateScreen">toggleRotateScreen</a></li><li><a href="global.html#unmuteAllSounds">unmuteAllSounds</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Tue Nov 05 2024 16:00:26 GMT+0100 (Central European Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

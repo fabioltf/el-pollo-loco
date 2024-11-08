@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: classes/endboss.class.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: classes/endboss.class.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Represents an end boss character in the game, extending the Sprite class.
+ */
+class Endboss extends Sprite {
+  axisX = 3850;
+  axisY = 100;
+  width = 300;
+  height = 360;
+  speed = 10;
+  life = 100;
+  notice = false;
+  alertAnimation = false;
+  isDead = false;
+
+  imgsAnimationArray = [
+    "../img/4_enemie_boss_chicken/2_alert/G5.png",
+    "../img/4_enemie_boss_chicken/2_alert/G6.png",
+    "../img/4_enemie_boss_chicken/2_alert/G7.png",
+    "../img/4_enemie_boss_chicken/2_alert/G8.png",
+    "../img/4_enemie_boss_chicken/2_alert/G9.png",
+    "../img/4_enemie_boss_chicken/2_alert/G10.png",
+    "../img/4_enemie_boss_chicken/2_alert/G11.png",
+    "../img/4_enemie_boss_chicken/2_alert/G12.png",
+  ];
+
+  imgsAnimationWalkArray = [
+    "../img/4_enemie_boss_chicken/1_walk/G1.png",
+    "../img/4_enemie_boss_chicken/1_walk/G2.png",
+    "../img/4_enemie_boss_chicken/1_walk/G3.png",
+    "../img/4_enemie_boss_chicken/1_walk/G4.png",
+  ];
+
+  imgsAnimationAttackArray = [
+    "../img/4_enemie_boss_chicken/3_attack/G13.png",
+    "../img/4_enemie_boss_chicken/3_attack/G14.png",
+    "../img/4_enemie_boss_chicken/3_attack/G15.png",
+    "../img/4_enemie_boss_chicken/3_attack/G16.png",
+    "../img/4_enemie_boss_chicken/3_attack/G17.png",
+    "../img/4_enemie_boss_chicken/3_attack/G18.png",
+    "../img/4_enemie_boss_chicken/3_attack/G19.png",
+    "../img/4_enemie_boss_chicken/3_attack/G20.png",
+  ];
+
+  imgsAnimationHurtArray = [
+    "../img/4_enemie_boss_chicken/4_hurt/G21.png",
+    "../img/4_enemie_boss_chicken/4_hurt/G22.png",
+    "../img/4_enemie_boss_chicken/4_hurt/G23.png",
+  ];
+
+  imgsAnimationDeadArray = [
+    "../img/4_enemie_boss_chicken/5_dead/G24.png",
+    "../img/4_enemie_boss_chicken/5_dead/G25.png",
+    "../img/4_enemie_boss_chicken/5_dead/G26.png",
+  ];
+
+  hurtSound = new Audio("../audio/chicken_hurt.mp3");
+  deadSound = new Audio("../audio/chicken_dead.mp3");
+
+  /**
+   * Initializes a new instance of the Endboss class, loading images and starting animations.
+   */
+  constructor() {
+    super().loadImg("../img/4_enemie_boss_chicken/2_alert/G5.png");
+    this.loadImgs(this.imgsAnimationArray);
+    this.loadImgs(this.imgsAnimationWalkArray);
+    this.loadImgs(this.imgsAnimationAttackArray);
+    this.loadImgs(this.imgsAnimationHurtArray);
+    this.loadImgs(this.imgsAnimationDeadArray);
+    this.animationIntervalArray = [];
+    this.animateCharacter();
+  }
+
+  /**
+   * Starts the character's animation based on its state.
+   */
+  animateCharacter() {
+    const animationInterval = setInterval(() => {
+      if (this.startAlert()) {
+        this.startAlertAnimation(animationInterval);
+      }
+    }, 240);
+
+    this.animationIntervalArray.push(animationInterval);
+  }
+
+  /**
+   * Checks if the end boss should enter alert state.
+   * @returns {boolean} - True if the character should enter alert state, false otherwise.
+   */
+  startAlert() {
+    return world &amp;&amp; world.character.axisX > 3300 &amp;&amp; !this.notice;
+  }
+
+  /**
+   * Starts the alert animation.
+   * @param {number} interval - The interval ID of the animation loop.
+   */
+  startAlertAnimation(interval) {
+    if (!this.alertAnimation) {
+      this.alertAnimationInterval = this.startAnimationInterval(
+        this.imgsAnimationArray,
+        275,
+        () => {
+          clearInterval(this.alertAnimationInterval);
+          this.alertAnimation = true;
+          setTimeout(() => {
+            this.notice = true;
+            this.walk();
+          }, 1000);
+        }
+      );
+      clearInterval(interval);
+    }
+  }
+
+  /**
+   * Starts an animation interval for the given images.
+   * @param {Array&lt;string>} images - The array of image paths for the animation.
+   * @param {number} intervalTime - The time interval in milliseconds for the animation.
+   * @param {Function} [onComplete] - A callback function to execute when the animation completes.
+   * @returns {number} - The interval ID for the animation.
+   */
+  startAnimationInterval(images, intervalTime, onComplete = null) {
+    let animationCounter = 0;
+    const animationLength = images.length;
+    return setInterval(() => {
+      this.moveAnimation(images);
+      animationCounter++;
+      if (animationCounter / animationLength >= 1) {
+        clearInterval(this.deathAnimationInterval);
+        if (onComplete) onComplete();
+      }
+    }, intervalTime);
+  }
+
+  /**
+   * Initiates the walking animation for the end boss.
+   */
+  walk() {
+    const walkingInterval = setInterval(() => {
+      if (this.life > 0 &amp;&amp; !this.isDead) {
+        this.moveAnimation(this.imgsAnimationWalkArray);
+        this.animateLeft();
+      } else if (this.endbossIsDead()) {
+        clearInterval(walkingInterval);
+        this.world.endGame();
+      }
+    }, 200);
+  }
+
+  /**
+   * Reduces the end boss's life and handles hurt animation.
+   */
+  endbossIsHit() {
+    this.life -= 10;
+    if (this.life &lt; 0) {
+      this.life = 0;
+    }
+    this.hurtAnimation();
+    this.setStatusBar();
+  }
+
+  /**
+   * Updates the status bar with the current life percentage of the end boss.
+   */
+  setStatusBar() {
+    world.endbossStatusBar.setPercentage(this.life);
+  }
+
+  /**
+   * Checks if the end boss is dead and initiates the death sequence if so.
+   */
+  endbossIsDead() {
+    if (this.life &lt;= 0 &amp;&amp; !this.isDead) {
+      this.isDead = true;
+      clearInterval(this.hurtAnimationInterval);
+      this.speed = 0;
+      this.deathAnimation();
+      this.deadSound.play();
+      setTimeout(() => {
+        displayGameOver();
+      }, 1000);
+      this.clearIntervals();
+    }
+  }
+
+  /**
+   * Triggers the hurt animation for the end boss.
+   */
+  hurtAnimation() {
+    if (!this.hurtAnimationInterval) {
+      this.speed = 0;
+      if (this.life >= 10) {
+        this.hurtSound.play();
+      }
+
+      this.hurtAnimationInterval = this.startAnimationInterval(
+        this.imgsAnimationHurtArray,
+        300,
+        () => {
+          this.walkingState();
+        }
+      );
+    }
+  }
+
+  /**
+   * Returns the end boss to the walking state after being hurt.
+   */
+  walkingState() {
+    clearInterval(this.hurtAnimationInterval);
+    this.hurtAnimationInterval = null;
+    this.moveAnimation(this.imgsAnimationWalkArray);
+    this.continueAfterDelay(0.05);
+  }
+
+  continueAfterDelay(delay) {
+    setTimeout(() => {
+      this.speed = 9 + Math.random() * 1.2;
+    }, delay * 1000);
+  }
+
+  deathAnimation() {
+    this.deathAnimationInterval = this.startAnimationInterval(
+      this.imgsAnimationDeadArray,
+      250,
+      () => {
+        this.finalDeathAnimation();
+      }
+    );
+  }
+
+  finalDeathAnimation() {
+    clearInterval(this.deathAnimationInterval);
+    this.deathAnimationInterval = null;
+    this.loadImg(
+      this.imgsAnimationDeadArray[this.imgsAnimationDeadArray.length - 1]
+    );
+  }
+
+  clearIntervals() {
+    this.animationIntervalArray.forEach((interval) => clearInterval(interval));
+    this.animationIntervalArray = [];
+    this.animationIntervalArray.forEach((interval) => {
+      const index = intervals.indexOf(interval);
+      if (index !== -1) {
+        intervals.splice(index, 1);
+      }
+    });
+  }
+
+  stopAllAnimations() {
+    clearInterval(this.hurtAnimationInterval);
+  }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Backgrounds.html">Backgrounds</a></li><li><a href="Bottles.html">Bottles</a></li><li><a href="BottlesBar.html">BottlesBar</a></li><li><a href="Character.html">Character</a></li><li><a href="Chick.html">Chick</a></li><li><a href="Chicken.html">Chicken</a></li><li><a href="Clouds.html">Clouds</a></li><li><a href="Coins.html">Coins</a></li><li><a href="CoinsBar.html">CoinsBar</a></li><li><a href="DrawableObject.html">DrawableObject</a></li><li><a href="Endboss.html">Endboss</a></li><li><a href="EndbossStatusBar.html">EndbossStatusBar</a></li><li><a href="Keyboard.html">Keyboard</a></li><li><a href="Level.html">Level</a></li><li><a href="Sprite.html">Sprite</a></li><li><a href="StatusBar.html">StatusBar</a></li><li><a href="ThrowableObject.html">ThrowableObject</a></li><li><a href="World.html">World</a></li></ul><h3>Global</h3><ul><li><a href="global.html#adjustCanvasSize">adjustCanvasSize</a></li><li><a href="global.html#animateCharacter">animateCharacter</a></li><li><a href="global.html#btnsPressEvents">btnsPressEvents</a></li><li><a href="global.html#displayGameOver">displayGameOver</a></li><li><a href="global.html#exitFullscreen">exitFullscreen</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#initLevel">initLevel</a></li><li><a href="global.html#muteAllSounds">muteAllSounds</a></li><li><a href="global.html#newGame">newGame</a></li><li><a href="global.html#onFullscreenChange">onFullscreenChange</a></li><li><a href="global.html#pushInterval">pushInterval</a></li><li><a href="global.html#requestAnimationFrameId">requestAnimationFrameId</a></li><li><a href="global.html#requestFullscreen">requestFullscreen</a></li><li><a href="global.html#resetCanvasSize">resetCanvasSize</a></li><li><a href="global.html#setCanvasSize">setCanvasSize</a></li><li><a href="global.html#startGameMenu">startGameMenu</a></li><li><a href="global.html#stopAllIntervals">stopAllIntervals</a></li><li><a href="global.html#toggleFullScreen">toggleFullScreen</a></li><li><a href="global.html#toggleRotateScreen">toggleRotateScreen</a></li><li><a href="global.html#unmuteAllSounds">unmuteAllSounds</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Tue Nov 05 2024 16:00:26 GMT+0100 (Central European Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+{
+  "name": "el-pollo-loco",
+  "version": "1.0.0",
+  "description": "A fun and interactive game featuring the character Pepe.",
+  "main": "index.js",
+  "scripts": {
+    "start": "live-server --open=./index.html",
+    "build": "jsdoc **/*.js -d docs",
+    "test": "echo \"No tests specified\" && exit 0",
+    "docs": "jsdoc -d docs --configure jsdocConf.jsdocConf"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fabioltf/el-pollo-loco.git"
+  },
+  "keywords": [
+    "game",
+    "javascript",
+    "el-pollo-loco"
+  ],
+  "author": "Fabion Latifi",
+  "license": "MIT",
+  "devDependencies": {
+    "jsdoc": "^3.6.6",
+    "live-server": "^1.2.1"
+  },
+  "dependencies": {
+    "docdash": "2.0.2"
+  }
+}
